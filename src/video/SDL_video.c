@@ -2909,42 +2909,14 @@ bool SDL_GetWindowPosition(SDL_Window *window, int *x, int *y)
 {
     CHECK_WINDOW_MAGIC(window, false);
 
-    // Fullscreen windows are always at their display's origin
-    if (window->flags & SDL_WINDOW_FULLSCREEN) {
-        SDL_DisplayID displayID;
-
-        if (x) {
-            *x = 0;
-        }
-        if (y) {
-            *y = 0;
-        }
-
-        /* Find the window's monitor and update to the
-           monitor offset. */
-        displayID = SDL_GetDisplayForWindow(window);
-        if (displayID != 0) {
-            SDL_Rect bounds;
-
-            SDL_zero(bounds);
-
-            SDL_GetDisplayBounds(displayID, &bounds);
-            if (x) {
-                *x = bounds.x;
-            }
-            if (y) {
-                *y = bounds.y;
-            }
-        }
-    } else {
-        const bool use_pending = (window->flags & SDL_WINDOW_HIDDEN) && window->last_position_pending;
-        if (x) {
-            *x = use_pending ? window->pending.x : window->x;
-        }
-        if (y) {
-            *y = use_pending ? window->pending.y : window->y;
-        }
+    const bool use_pending = (window->flags & SDL_WINDOW_HIDDEN) && window->last_position_pending;
+    if (x) {
+        *x = use_pending ? window->pending.x : window->x;
     }
+    if (y) {
+        *y = use_pending ? window->pending.y : window->y;
+    }
+
     return true;
 }
 
