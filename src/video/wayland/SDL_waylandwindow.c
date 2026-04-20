@@ -400,14 +400,8 @@ static void ConfigureWindowGeometry(SDL_Window *window)
             // Clamp the physical window size to the system minimum required size.
             data->current.logical_width = SDL_max(window_width, data->system_limits.min_width);
             data->current.logical_height = SDL_max(window_height, data->system_limits.min_height);
-
-            if (!data->scale_to_display) {
-                data->pointer_scale.x = 1.0;
-                data->pointer_scale.y = 1.0;
-            } else {
-                data->pointer_scale.x = scale_factor;
-                data->pointer_scale.y = scale_factor;
-            }
+            data->pointer_scale.x = scale_factor;
+            data->pointer_scale.y = scale_factor;
         }
     }
 
